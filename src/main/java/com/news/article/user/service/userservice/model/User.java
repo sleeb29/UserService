@@ -26,12 +26,12 @@ public class User implements Serializable{
     String emailAddress;
 
     @ManyToMany(fetch=FetchType.EAGER)
-    @JoinTable(name = "user_service",
+    @JoinTable(name = "user_client_service",
             joinColumns =
             @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
             inverseJoinColumns =
-            @JoinColumn(name = "service_id", referencedColumnName = "service_id"))
-    private List<Service> serviceList;
+            @JoinColumn(name = "client_service_id", referencedColumnName = "client_service_id"))
+    private List<ClientService> clientServiceList;
 
     @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name = "user_topic",
@@ -81,12 +81,12 @@ public class User implements Serializable{
         this.emailAddress = emailAddress;
     }
 
-    public List<Service> getServiceList() {
-        return serviceList;
+    public List<ClientService> getClientServiceList() {
+        return clientServiceList;
     }
 
-    public void setServiceList(List<Service> serviceList) {
-        this.serviceList = serviceList;
+    public void setClientServiceList(List<ClientService> clientServiceList) {
+        this.clientServiceList = clientServiceList;
     }
 
     public List<Topic> getTopicList() {
