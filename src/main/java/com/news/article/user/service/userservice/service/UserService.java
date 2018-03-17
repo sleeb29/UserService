@@ -17,6 +17,6 @@ public interface UserService {
     Set<Topic> findAllTopics();
     Set<ClientService> findAllClientServices();
 
-    public boolean isUser(User user);
+    boolean isUser(User user);
 
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @RestController
@@ -21,7 +22,7 @@ public class WebController {
     @Autowired
     UserService userService;
 
-    @RequestMapping(value = "/topic/", method = RequestMethod.GET)
+    @RequestMapping(value = "/topic", method = RequestMethod.GET)
     public ResponseEntity<Set<Topic>> getAllTopics() {
 
         Set<Topic> topicSet = userService.findAllTopics();
@@ -33,7 +34,7 @@ public class WebController {
 
     }
 
-    @RequestMapping(value = "/service/", method = RequestMethod.GET)
+    @RequestMapping(value = "/service", method = RequestMethod.GET)
     public ResponseEntity<Set<ClientService>> getAlClientServices() {
 
         Set<ClientService> clientServiceSet = userService.findAllClientServices();
@@ -45,7 +46,7 @@ public class WebController {
 
     }
 
-    @RequestMapping(value = "/user/", method = RequestMethod.POST)
+    @RequestMapping(value = "/user", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<Void> postUser(@RequestBody User user) {
 
         if (userService.isUser(user)) {
@@ -59,7 +60,7 @@ public class WebController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/user/", method = RequestMethod.PUT)
+    @RequestMapping(value = "/user", method = RequestMethod.PUT)
     public ResponseEntity<Void> putUser(@RequestBody User user) {
 
         if (!userService.isUser(user)) {
@@ -73,7 +74,7 @@ public class WebController {
         return new ResponseEntity<>(headers, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/user/", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/user", method = RequestMethod.DELETE)
     public ResponseEntity<User> deleteUser(@RequestBody User user) {
         System.out.println("Fetching & Deleting User with name " + user.getFirstName() + " " + user.getLastName());
 

@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
         Set<Topic> topicSet = new HashSet<>();
 
         for(User user : userIterable){
-            topicSet.addAll(user.getTopicList());
+            topicSet.addAll(user.getTopicSet());
         }
 
         return topicSet;
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
         Set<ClientService> clientServiceSet = new HashSet<>();
 
         for(User user : userIterable){
-            clientServiceSet.addAll(user.getClientServiceList());
+            clientServiceSet.addAll(user.getClientServiceSet());
         }
 
         return clientServiceSet;
@@ -60,8 +60,15 @@ public class UserServiceImpl implements UserService {
     }
 
     public boolean isUser(User user){
-        Optional<User> optionalUser = userRepository.findById(user.getUserId());
-        return optionalUser.isPresent();
+
+        Iterator<User> persistedUsers = userRepository.findAll().iterator();
+        while(persistedUsers.hasNext()){
+            if(persistedUsers.next().getEmailAddress().equals(user.getEmailAddress())){
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

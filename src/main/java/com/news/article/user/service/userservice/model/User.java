@@ -1,11 +1,18 @@
 package com.news.article.user.service.userservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlElement;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "user")
+@Table(name = "service_user")
 public class User implements Serializable{
 
     @Id
@@ -25,21 +32,21 @@ public class User implements Serializable{
     @Column(name = "email_address")
     String emailAddress;
 
-    @ManyToMany(fetch=FetchType.EAGER)
+    @ManyToMany(fetch=FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinTable(name = "user_client_service",
             joinColumns =
             @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
             inverseJoinColumns =
             @JoinColumn(name = "client_service_id", referencedColumnName = "client_service_id"))
-    private List<ClientService> clientServiceList;
+    private Set<ClientService> clientServiceSet;
 
-    @ManyToMany(fetch=FetchType.EAGER)
+    @ManyToMany(fetch=FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinTable(name = "user_topic",
             joinColumns =
             @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
             inverseJoinColumns =
             @JoinColumn(name = "topic_id", referencedColumnName = "topic_id"))
-    private List<Topic> topicList;
+    private Set<Topic> topicSet;
 
     public long getUserId() {
         return userId;
@@ -81,19 +88,19 @@ public class User implements Serializable{
         this.emailAddress = emailAddress;
     }
 
-    public List<ClientService> getClientServiceList() {
-        return clientServiceList;
+    public Set<ClientService> getClientServiceSet() {
+        return clientServiceSet;
     }
 
-    public void setClientServiceList(List<ClientService> clientServiceList) {
-        this.clientServiceList = clientServiceList;
+    public void setClientServiceSet(Set<ClientService> clientServiceSet) {
+        this.clientServiceSet = clientServiceSet;
     }
 
-    public List<Topic> getTopicList() {
-        return topicList;
+    public Set<Topic> getTopicSet() {
+        return topicSet;
     }
 
-    public void setTopicList(List<Topic> topicList) {
-        this.topicList = topicList;
+    public void setTopicSet(Set<Topic> topicSet) {
+        this.topicSet = topicSet;
     }
 }
