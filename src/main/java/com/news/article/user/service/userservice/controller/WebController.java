@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashSet;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.Set;
 
 @RestController
@@ -34,15 +35,19 @@ public class WebController {
 
     }
 
-    @RequestMapping(value = "/service", method = RequestMethod.GET)
-    public ResponseEntity<Set<ClientService>> getAlClientServices() {
+    @RequestMapping(value = "/serviceData", method = RequestMethod.POST)
+    public ResponseEntity<HashMap<String, HashMap<String, Set<String>>>> getTopicServiceData(@RequestBody String topicName) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 
-        Set<ClientService> clientServiceSet = userService.findAllClientServices();
-        if(clientServiceSet.isEmpty()){
+        HashMap<String, Set<String>> serviceData = userService.getServiceDataForTopic(topicName);
+
+        if(serviceData.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
-        return new ResponseEntity<>(clientServiceSet, HttpStatus.OK);
+        HashMap<String, HashMap<String, Set<String>>> serviceDataMap = new HashMap<>();
+        serviceDataMap.put("serviceData", serviceData);
+
+        return new ResponseEntity<>(serviceDataMap, HttpStatus.OK);
 
     }
 
@@ -50,7 +55,7 @@ public class WebController {
     public ResponseEntity<Void> postUser(@RequestBody User user) {
 
         if (userService.isUser(user)) {
-            System.out.println("A User with name " + user.getFirstName() + " " + user.getLastName() + " already exist");
+            System.out.println("A User with name " + user.getFirstName() + " " + user.getLastName() + " already exists");
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
 

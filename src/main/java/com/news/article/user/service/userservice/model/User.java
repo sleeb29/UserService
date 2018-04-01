@@ -8,6 +8,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -103,4 +104,5 @@ public class User implements Serializable{
     public void setTopicSet(Set<Topic> topicSet) {
         this.topicSet = topicSet;
     }
+
 }

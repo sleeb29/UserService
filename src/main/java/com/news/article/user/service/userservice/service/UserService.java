@@ -4,6 +4,8 @@ import com.news.article.user.service.userservice.model.ClientService;
 import com.news.article.user.service.userservice.model.Topic;
 import com.news.article.user.service.userservice.model.User;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.Set;
 
 public interface UserService {
@@ -16,6 +18,7 @@ public interface UserService {
 
     Set<Topic> findAllTopics();
     Set<ClientService> findAllClientServices();
+    HashMap<String, Set<String>> getServiceDataForTopic(String topicName) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException;
 
     boolean isUser(User user);
 
