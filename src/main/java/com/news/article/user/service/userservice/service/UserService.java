@@ -10,16 +10,16 @@ import java.util.Set;
 
 public interface UserService {
 
-    void createUser(User user);
+    Boolean createUser(User user);
 
-    void updateUser(User user);
+    User updateUser(User user);
 
-    void deleteUser(User user);
+    User deleteUser(User user);
 
     Set<Topic> findAllTopics();
     Set<ClientService> findAllClientServices();
     HashMap<String, Set<String>> getServiceDataForTopic(String topicName) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException;
 
-    boolean isUser(User user);
+    User getExistingUser(User user);
 
 }

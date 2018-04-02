@@ -15,7 +15,7 @@ public class Topic {
     @Column(name = "name")
     String name;
 
-    @ManyToMany(fetch=FetchType.EAGER, cascade = {CascadeType.ALL})
+    @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name = "user_topic",
             joinColumns =
             @JoinColumn(name = "topic_id", referencedColumnName = "topic_id"),

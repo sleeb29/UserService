@@ -23,20 +23,44 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
 
-    public void createUser(User user){
-        userRepository.save(user);
-    }
+    public Boolean createUser(User user){
 
-    public void updateUser(User user){
-        Optional<User> optionalUser = userRepository.findById(user.getUserId());
-        if(optionalUser.isPresent()){
-            userRepository.deleteById(user.getUserId());
-            userRepository.save(user);
+        User existingUser = getExistingUser(user);
+        if(existingUser != null){
+            return false;
         }
+
+        userRepository.save(user);
+        return true;
+
     }
 
-    public void deleteUser(User user){
-        userRepository.deleteById(user.getUserId());
+    public User updateUser(User user){
+        User existingUser = getExistingUser(user);
+
+        if(existingUser == null){
+            return null;
+        }
+
+        long existingUserID = existingUser.getUserId();
+        user.setUserId(existingUserID);
+        userRepository.save(user);
+
+        return user;
+
+    }
+
+    public User deleteUser(User user){
+
+        User existingUser = getExistingUser(user);
+
+        if(existingUser == null){
+            return null;
+        }
+
+        userRepository.deleteById(existingUser.getUserId());
+        return existingUser;
+
     }
 
     public Set<Topic> findAllTopics(){
@@ -65,16 +89,17 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    public boolean isUser(User user){
+    public User getExistingUser(User user){
 
         Iterator<User> persistedUsers = userRepository.findAll().iterator();
         while(persistedUsers.hasNext()){
-            if(persistedUsers.next().getEmailAddress().equals(user.getEmailAddress())){
-                return true;
+            User persistedUser = persistedUsers.next();
+            if(persistedUser.getEmailAddress().equals(user.getEmailAddress())){
+                return persistedUser;
             }
         }
 
-        return false;
+        return null;
     }
 
     public HashMap<String, Set<String>> getServiceDataForTopic(String topicName) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
@@ -105,24 +130,6 @@ public class UserServiceImpl implements UserService {
         }
 
         return serviceData;
-
-    }
-
-    public Set<String> getAllUserIdsSubscribedToTopic(String topicName){
-
-        Set<String> userIds = new HashSet<>();
-
-        Iterable<User> userIterable = userRepository.findAll();
-
-        for(User user : userIterable){
-            Set<Topic> topicSet = user.getTopicSet();
-            Set<String> topicSetNames = topicSet.stream().map(topic -> topic.getName()).collect(Collectors.toSet());
-            if(topicSetNames.contains(topicName)){
-                userIds.add(user.getEmailAddress());
-            }
-        }
-
-        return userIds;
 
     }
 

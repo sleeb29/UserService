@@ -19,7 +19,7 @@ public class ClientService implements Serializable{
     @Column(name = "user_data_element")
     private String userDataElement;
 
-    @ManyToMany(fetch=FetchType.EAGER, cascade = {CascadeType.ALL})
+    @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name = "user_client_service",
             joinColumns =
             @JoinColumn(name = "client_service_id", referencedColumnName = "client_service_id"),

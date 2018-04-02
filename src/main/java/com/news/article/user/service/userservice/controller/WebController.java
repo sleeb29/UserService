@@ -1,6 +1,5 @@
 package com.news.article.user.service.userservice.controller;
 
-import com.news.article.user.service.userservice.model.ClientService;
 import com.news.article.user.service.userservice.model.Topic;
 import com.news.article.user.service.userservice.model.User;
 import com.news.article.user.service.userservice.service.UserService;
@@ -54,12 +53,11 @@ public class WebController {
     @RequestMapping(value = "/user", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<Void> postUser(@RequestBody User user) {
 
-        if (userService.isUser(user)) {
-            System.out.println("A User with name " + user.getFirstName() + " " + user.getLastName() + " already exists");
+        Boolean createdUser = userService.createUser(user);
+        if (!createdUser) {
+            System.out.println("A User with name " + user.getFirstName() + " " + user.getLastName() + " could not be created.");
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-
-        userService.createUser(user);
 
         HttpHeaders headers = new HttpHeaders();
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
@@ -68,12 +66,12 @@ public class WebController {
     @RequestMapping(value = "/user", method = RequestMethod.PUT)
     public ResponseEntity<Void> putUser(@RequestBody User user) {
 
-        if (!userService.isUser(user)) {
+        User updatedUser = userService.updateUser(user);
+
+        if (updatedUser == null) {
             System.out.println("This user does not exist " + user.getFirstName() + " " + user.getLastName() + ".");
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-
-        userService.updateUser(user);
 
         HttpHeaders headers = new HttpHeaders();
         return new ResponseEntity<>(headers, HttpStatus.OK);
@@ -83,13 +81,15 @@ public class WebController {
     public ResponseEntity<User> deleteUser(@RequestBody User user) {
         System.out.println("Fetching & Deleting User with name " + user.getFirstName() + " " + user.getLastName());
 
-        if (!userService.isUser(user)) {
+        User deletedUser = userService.deleteUser(user);
+
+        if (deletedUser == null) {
             System.out.println("Unable to delete. User with name " + user.getFirstName() + " " + user.getLastName());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        userService.deleteUser(user);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
     }
 
 }
