@@ -102,9 +102,9 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    public HashMap<String, Set<String>> getServiceDataForTopic(String topicName) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    public HashMap<String, HashMap<String, Set<String>>> getServiceDataForTopic(String topicName) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 
-        HashMap<String, Set<String>> serviceData = new HashMap<>();
+        HashMap<String, HashMap<String, Set<String>>> serviceData = new HashMap<>();
 
         Set<String> userIds = new HashSet<>();
 
@@ -116,13 +116,17 @@ public class UserServiceImpl implements UserService {
             for(ClientService clientService : clientServiceSet){
 
                 if(!serviceData.containsKey(clientService.getName())){
-                    serviceData.put(clientService.getName(), new HashSet<>());
+                    serviceData.put(clientService.getName(), new HashMap<>());
+                }
+
+                if(!serviceData.get(clientService.getName()).containsKey(user.getLangauge())){
+                    serviceData.get(clientService.getName()).put(user.getLangauge(), new HashSet<>());
                 }
 
                 String dataElementName = clientService.getUserDataElement();
                 String dataElementValue = PropertyUtils.getSimpleProperty(user, dataElementName).toString();
 
-                Set<String> serviceUsers = serviceData.get(clientService.getName());
+                Set<String> serviceUsers = serviceData.get(clientService.getName()).get(user.getLangauge());
                 serviceUsers.add(dataElementValue);
 
             }

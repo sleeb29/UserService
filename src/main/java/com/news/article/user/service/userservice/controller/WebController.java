@@ -35,15 +35,15 @@ public class WebController {
     }
 
     @RequestMapping(value = "/serviceData", method = RequestMethod.POST)
-    public ResponseEntity<HashMap<String, HashMap<String, Set<String>>>> getTopicServiceData(@RequestBody String topicName) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    public ResponseEntity<HashMap<String, HashMap<String, HashMap<String, Set<String>>>>> getTopicServiceData(@RequestBody String topicName) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 
-        HashMap<String, Set<String>> serviceData = userService.getServiceDataForTopic(topicName);
+        HashMap<String, HashMap<String, Set<String>>> serviceData = userService.getServiceDataForTopic(topicName);
 
         if(serviceData.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
-        HashMap<String, HashMap<String, Set<String>>> serviceDataMap = new HashMap<>();
+        HashMap<String, HashMap<String, HashMap<String, Set<String>>>> serviceDataMap = new HashMap<>();
         serviceDataMap.put("serviceData", serviceData);
 
         return new ResponseEntity<>(serviceDataMap, HttpStatus.OK);

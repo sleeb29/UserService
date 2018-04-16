@@ -33,6 +33,9 @@ public class User implements Serializable{
     @Column(name = "email_address")
     String emailAddress;
 
+    @Column(name = "language")
+    String langauge;
+
     @ManyToMany(fetch=FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinTable(name = "user_client_service",
             joinColumns =
@@ -87,6 +90,14 @@ public class User implements Serializable{
 
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
+    }
+
+    public String getLangauge() {
+        return langauge;
+    }
+
+    public void setLangauge(String langauge) {
+        this.langauge = langauge;
     }
 
     public Set<ClientService> getClientServiceSet() {

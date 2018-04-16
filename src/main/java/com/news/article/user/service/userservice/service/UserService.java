@@ -18,7 +18,7 @@ public interface UserService {
 
     Set<Topic> findAllTopics();
     Set<ClientService> findAllClientServices();
-    HashMap<String, Set<String>> getServiceDataForTopic(String topicName) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException;
+    HashMap<String, HashMap<String, Set<String>>> getServiceDataForTopic(String topicName) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException;
 
     User getExistingUser(User user);
 
