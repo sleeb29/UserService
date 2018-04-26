@@ -106,8 +106,6 @@ public class UserServiceImpl implements UserService {
 
         HashMap<String, HashMap<String, Set<String>>> serviceData = new HashMap<>();
 
-        Set<String> userIds = new HashSet<>();
-
         Iterable<User> userIterable = userRepository.findAll();
         for(User user : userIterable){
 
