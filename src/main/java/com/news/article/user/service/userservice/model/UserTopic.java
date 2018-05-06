@@ -7,37 +7,29 @@ import javax.persistence.*;
 public class UserTopic {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_topic_id")
-    long userServiceId;
-
-    @Column(name = "user_id")
-    long userId;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "topic_id")
-    long topidId;
+    long topicId;
 
-    public long getUserServiceId() {
-        return userServiceId;
+
+    @Column(name = "name")
+    String name;
+
+    public long getTopicId() {
+        return topicId;
     }
 
-    public void setUserServiceId(long userServiceId) {
-        this.userServiceId = userServiceId;
+    public void setTopicId(long topicId) {
+        this.topicId = topicId;
     }
 
-    public long getUserId() {
-        return userId;
+    public String getName() {
+        return name;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public long getTopidId() {
-        return topidId;
-    }
 
-    public void setTopidId(long topidId) {
-        this.topidId = topidId;
-    }
 }

@@ -1,10 +1,9 @@
 package com.news.article.user.service.userservice;
 
 import com.news.article.user.service.userservice.model.ClientService;
-import com.news.article.user.service.userservice.model.Topic;
 import com.news.article.user.service.userservice.model.User;
+import com.news.article.user.service.userservice.model.UserTopic;
 import com.news.article.user.service.userservice.service.UserService;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +49,8 @@ public class UserserviceApplicationTests {
 
 		Set<ClientService> clientServiceSet = new HashSet<>();
 		user.setClientServiceSet(clientServiceSet);
-		Set<Topic> topicSet = new HashSet<>();
-		user.setTopicSet(topicSet);
+		Set<UserTopic> topicSet = new HashSet<>();
+		//user.setUserTopicSet(topicSet);
 
 		return user;
 

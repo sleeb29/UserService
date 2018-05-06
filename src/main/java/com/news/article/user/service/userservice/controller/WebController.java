@@ -1,7 +1,8 @@
 package com.news.article.user.service.userservice.controller;
 
-import com.news.article.user.service.userservice.model.Topic;
+import com.news.article.user.service.userservice.exception.ClientServiceDoesNotExistException;
 import com.news.article.user.service.userservice.model.User;
+import com.news.article.user.service.userservice.model.UserTopic;
 import com.news.article.user.service.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -23,9 +24,9 @@ public class WebController {
     UserService userService;
 
     @RequestMapping(value = "/topic", method = RequestMethod.GET)
-    public ResponseEntity<Set<Topic>> getAllTopics() {
+    public ResponseEntity<Set<UserTopic>> getAllTopics() {
 
-        Set<Topic> topicSet = userService.findAllTopics();
+        Set<UserTopic> topicSet = userService.findAllTopics();
         if(topicSet.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -51,7 +52,7 @@ public class WebController {
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<Void> postUser(@RequestBody User user) {
+    public ResponseEntity<Void> postUser(@RequestBody User user) throws ClientServiceDoesNotExistException {
 
         Boolean createdUser = userService.createUser(user);
         if (!createdUser) {
@@ -64,7 +65,7 @@ public class WebController {
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.PUT)
-    public ResponseEntity<Void> putUser(@RequestBody User user) {
+    public ResponseEntity<Void> putUser(@RequestBody User user) throws ClientServiceDoesNotExistException {
 
         User updatedUser = userService.updateUser(user);
 

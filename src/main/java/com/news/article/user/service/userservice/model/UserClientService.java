@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class UserClientService {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_client_service_id")
     long userClientServiceId;
 
@@ -16,6 +16,10 @@ public class UserClientService {
 
     @Column(name = "client_service_id")
     long clientServiceId;
+
+    @ManyToOne
+    @JoinColumn(name="user_id", insertable = false, updatable = false)
+    private User user;
 
     public long getUserClientServiceId() {
         return userClientServiceId;

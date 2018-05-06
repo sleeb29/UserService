@@ -1,15 +1,8 @@
 package com.news.article.user.service.userservice.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlElement;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -17,7 +10,7 @@ import java.util.Set;
 public class User implements Serializable{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private long userId;
 
@@ -34,9 +27,9 @@ public class User implements Serializable{
     String emailAddress;
 
     @Column(name = "language")
-    String langauge;
+    String language;
 
-    @ManyToMany(fetch=FetchType.EAGER, cascade = {CascadeType.ALL})
+    @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name = "user_client_service",
             joinColumns =
             @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
@@ -44,13 +37,12 @@ public class User implements Serializable{
             @JoinColumn(name = "client_service_id", referencedColumnName = "client_service_id"))
     private Set<ClientService> clientServiceSet;
 
-    @ManyToMany(fetch=FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinTable(name = "user_topic",
-            joinColumns =
-            @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
-            inverseJoinColumns =
-            @JoinColumn(name = "topic_id", referencedColumnName = "topic_id"))
-    private Set<Topic> topicSet;
+    @OneToMany(mappedBy="user")
+    private Collection<UserClientService> userClientServiceCollection;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = UserTopic.class)
+    @JoinColumn(name="user_id", referencedColumnName = "user_id", nullable=false)
+    private Set<UserTopic> userTopicSet;
 
     public long getUserId() {
         return userId;
@@ -92,12 +84,12 @@ public class User implements Serializable{
         this.emailAddress = emailAddress;
     }
 
-    public String getLangauge() {
-        return langauge;
+    public String getLanguage() {
+        return language;
     }
 
-    public void setLangauge(String langauge) {
-        this.langauge = langauge;
+    public void setLangauge(String language) {
+        this.language = language;
     }
 
     public Set<ClientService> getClientServiceSet() {
@@ -108,12 +100,19 @@ public class User implements Serializable{
         this.clientServiceSet = clientServiceSet;
     }
 
-    public Set<Topic> getTopicSet() {
-        return topicSet;
+    public Collection<UserClientService> getUserClientServiceCollection() {
+        return userClientServiceCollection;
     }
 
-    public void setTopicSet(Set<Topic> topicSet) {
-        this.topicSet = topicSet;
+    public void setUserClientServiceCollection(Collection<UserClientService> userClientServiceCollection) {
+        this.userClientServiceCollection = userClientServiceCollection;
     }
 
+    public Set<UserTopic> getUserTopicSet() {
+        return userTopicSet;
+    }
+
+    public void setUserTopicSet(Set<UserTopic> userTopicSet) {
+        this.userTopicSet = userTopicSet;
+    }
 }
